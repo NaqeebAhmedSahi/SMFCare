@@ -1,0 +1,160 @@
+'use client';
+import React, { useState, ChangeEvent, FormEvent } from "react";
+import { motion } from "framer-motion";  // Correct import
+
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
+
+const ContactPage: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    // Handle form submission logic (e.g., sending form data to a server)
+    console.log(formData);
+  };
+
+  return (
+    <section className="bg-gradient-to-b from-black via-gray-900 to-black text-white py-20 px-5 md:px-10 lg:px-20">
+      {/* Main Wrapper */}
+      <motion.div className="max-w-7xl mx-auto">
+
+        {/* Header Section */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+            Contact Us
+          </h2>
+          <p className="mt-4 text-gray-300 text-lg md:text-xl max-w-3xl mx-auto">
+            We are here to assist you. Feel free to reach out with any inquiries.
+          </p>
+          <hr className="mt-6 border-t-2 border-gray-700 mx-auto w-20" />
+        </motion.div>
+
+        {/* Form Section */}
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-10"
+          initial={{ x: "-100vw", opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          {/* Left Section: Information */}
+          <div>
+            <motion.div
+              initial={{ x: -50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h3 className="text-3xl md:text-4xl font-semibold mb-6">
+                Get In Touch
+              </h3>
+              <p className="text-gray-300 mb-6">
+                Have any questions or need further assistance? We're here to help! Reach out to us and we'll respond as soon as possible.
+              </p>
+              <p className="text-gray-300">
+                <strong>Address:</strong> 123 Medical Avenue, City, Country
+              </p>
+              <p className="text-gray-300">
+                <strong>Phone:</strong> +1 (123) 456-7890
+              </p>
+              <p className="text-gray-300">
+                <strong>Email:</strong> contact@medicaltools.com
+              </p>
+            </motion.div>
+          </div>
+
+          {/* Right Section: Contact Form */}
+          <div>
+            <motion.div
+              initial={{ x: 50, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              transition={{ duration: 0.8 }}
+            >
+              <h3 className="text-3xl md:text-4xl font-semibold mb-6">
+                Send Us a Message
+              </h3>
+              <form onSubmit={handleSubmit}>
+                <div className="grid grid-cols-1 gap-6">
+                  <div>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="w-full p-4 bg-gray-800 text-white rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Your Name"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="w-full p-4 bg-gray-800 text-white rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Your Email"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <textarea
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      className="w-full p-4 bg-gray-800 text-white rounded-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                      placeholder="Your Message"
+                      rows={4}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <button
+                      type="submit"
+                      className="w-full py-3 px-6 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transition-all duration-300"
+                    >
+                      Send Message
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* Footer Section */}
+        <motion.div
+          className="text-center mt-16"
+          initial={{ y: 50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 1 }}
+        >
+          <p className="text-gray-300 text-sm">
+            © 2025 Medical Tools. All Rights Reserved.
+          </p>
+        </motion.div>
+      </motion.div>
+    </section>
+  );
+};
+
+export default ContactPage;
