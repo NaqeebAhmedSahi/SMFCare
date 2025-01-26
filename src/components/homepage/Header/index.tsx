@@ -100,7 +100,7 @@ const Header = () => {
         </section>
 
         {/* Animated Slider Section */}
-        <div className="relative min-h-[448px] md:min-h-[428px] overflow-hidden -mt-14 md:-mt-20">
+        <div className="relative min-h-[448px] md:min-h-[428px] overflow-hidden lg:-mt-14 md:-mt-0">
           <AnimatePresence mode="wait">
             <motion.section
               key={currentImageIndex}

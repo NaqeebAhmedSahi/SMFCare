@@ -103,13 +103,14 @@ const TopNavbar = () => {
               src="/images/logo.png" // Replace with the correct path for your logo
               alt="Logo"
               height={40} // Adjust height as per your logo size
-              width={150} // Adjust width as per your logo size
+              width={80} // Adjust width as per your logo size
+              className="w-[60px] h-[40px] sm:w-[80px] sm:h-[40px] md:w-[150px] md:h-[45px] lg:w-[150px] lg:h-[50px] xl:w-[190px] xl:h-[50px] "
             />
           </Link>
         </div>
         <NavigationMenu className="hidden md:flex mr-2 lg:mr-7">
           <NavigationMenuList>
-            {data.map((item) => (
+            {data.map((item:any) => (
               <React.Fragment key={item.id}>
                 {item.type === "MenuItem" && (
                   <Link href={item.url || "/"}>

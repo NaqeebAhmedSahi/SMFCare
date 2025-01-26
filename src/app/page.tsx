@@ -17,12 +17,14 @@ export default async function Home() {
   let topSelling: Product[] = [];
 
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`);
-
-    // Check if the response is ok (status 200)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`, {
+      method: 'GET',
+      headers: {
+        // 'Authorization': `Bearer ${yourAuthToken}`, // Add the token here if needed
+        'Content-Type': 'application/json',
+      },
+    });
+    
 
     const data = await response.json();
 

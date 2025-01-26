@@ -124,8 +124,7 @@ const Footer = () => {
                 />
               </Link>
               <p className="text-black/60 text-sm mb-9">
-                We have clothes that suits your style and which you’re proud to
-                wear. From women to men.
+              We provide medical equipment and tools designed for professionals and patients alike.
               </p>
               <div className="flex items-center">
                 {socialsData.map((social) => (
