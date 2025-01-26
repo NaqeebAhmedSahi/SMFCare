@@ -20,23 +20,27 @@ import { Review } from "@/types/review.types";
 type ReviewsProps = { data: Review[] };
 
 const Reviews = ({ data }: ReviewsProps) => {
-  const [api, setApi] = React.useState<CarouselApi>();
+  const [api, setApi] = React.useState<CarouselApi | null>(null);
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
   const isDesktop = useMediaQuery("(min-width: 1024px)");
   const isClient = useIsClient();
 
   React.useEffect(() => {
-    if (!api) {
-      return;
-    }
+    if (!api) return;
 
     setCount(api.scrollSnapList().length);
-    setCurrent(api.selectedScrollSnap() + 1);
+    setCurrent(api.selectedScrollSnap());
 
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap() + 1);
-    });
+    const handleSelect = () => {
+      setCurrent(api.selectedScrollSnap());
+    };
+
+    api.on("select", handleSelect);
+
+    return () => {
+      api.off("select", handleSelect);  // Clean up event listener
+    };
   }, [api]);
 
   if (!isClient) return null;
@@ -93,27 +97,9 @@ const Reviews = ({ data }: ReviewsProps) => {
                       <div
                         className={cn([
                           isDesktop
-                            ? (current + 1 === count
-                                ? 0
-                                : current + 1 > count
-                                ? 1
-                                : current + 1) === index &&
-                              "backdrop-blur-[2px]"
-                            : (current === count ? 0 : current) === index &&
-                              "backdrop-blur-[2px]",
-                          isDesktop
-                            ? (current === 1
-                                ? count - 2
-                                : current === 2
-                                ? count - 1
-                                : current - 3) === index &&
-                              "backdrop-blur-[2px]"
-                            : (current === 1
-                                ? count - 1
-                                : current === 2
-                                ? 0
-                                : current - 2) === index &&
-                              "backdrop-blur-[2px]",
+                            ? current !== index &&
+                              "backdrop-blur-[2px]"  // Apply blur based on current index
+                            : current === index && "backdrop-blur-[2px]",  // Apply blur only for the current item in mobile
                           "absolute bg-white/10 right-0 top-0 h-full w-full z-10",
                         ])}
                       />

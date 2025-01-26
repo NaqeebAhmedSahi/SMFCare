@@ -5,7 +5,7 @@ import emailjs from 'emailjs-com';  // Import EmailJS
 import Modal from 'react-modal';
 
 // Modal styles (customizing modal to fit above navbar and contact page style)
-const modalStyles = {
+const modalStyles: ReactModal.Styles  = {
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.75)',
     zIndex: 1000, // Ensure modal is above everything
