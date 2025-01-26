@@ -13,24 +13,41 @@ interface HomeProps {
 }
 
 export default async function Home() {
-  // Fetch data within the component
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`);
-  const data = await response.json();
+  let newArrivals: Product[] = [];
+  let topSelling: Product[] = [];
 
-  // Filter top-rated products with a rating of 5
-  const topRatedProducts = data.products.filter((product: Product) => product.rating === 5);
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products`);
+
+    // Check if the response is ok (status 200)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    // Filter top-rated products with a rating of 5
+    topSelling = data.products.filter((product: Product) => product.rating === 5);
+    newArrivals = data.products;
+
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    // Optional: Provide fallback data in case of an error
+    newArrivals = [];
+    topSelling = [];
+  }
 
   return (
     <>
       <Header />
       <Brands />
       <main className="my-[50px] sm:my-[72px]">
-        <ProductListSec title="NEW ARRIVALS" data={data.products} viewAllLink="/shop/all" />
+        <ProductListSec title="NEW ARRIVALS" data={newArrivals} viewAllLink="/shop/all" />
         <div className="max-w-frame mx-auto px-4 xl:px-0">
           <hr className="h-[1px] border-t-black/10 my-10 sm:my-16" />
         </div>
         <div className="mb-[50px] sm:mb-20">
-          <ProductListSec title="TOP SELLING" data={topRatedProducts} viewAllLink="/shop/all" />
+          <ProductListSec title="TOP SELLING" data={topSelling} viewAllLink="/shop/all" />
         </div>
         <div className="mb-[50px] sm:mb-20">
           <DressStyle />
