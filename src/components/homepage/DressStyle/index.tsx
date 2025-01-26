@@ -29,12 +29,12 @@ const DressStyle = () => {
         >
           <DressStyleCard
             title="General Surgery"
-            url="/shop#casual"
+            url="/shop/General-Surgery"
             className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px] bg-[url('/images/surgi-style-1.jpg')]"
           />
           <DressStyleCard
             title="Laryngoscopes"
-            url="/shop#formal"
+            url="/shop/Laryngoscopes"
             className="md:max-w-[684px] h-[190px] bg-[url('/images/surgi-style-2.jpg')]"
           />
         </motion.div>
@@ -47,12 +47,12 @@ const DressStyle = () => {
         >
           <DressStyleCard
             title="Dental"
-            url="/shop#party"
+            url="/shop/Dental"
             className="md:max-w-[684px] h-[190px] bg-[url('/images/surgi-style-3.jpg')]"
           />
           <DressStyleCard
             title="Micro Surgery"
-            url="/shop#gym"
+            url="/shop/Micro-Surgery"
             className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px] bg-[url('/images/surgi-style-4.jpg')]"
           />
         </motion.div>
@@ -66,16 +66,15 @@ const DressStyle = () => {
         >
           <DressStyleCard
             title="Beauty"
-            url="/shop#casual"
+            url="/shop/Beauty"
             className="md:max-w-[260px] lg:max-w-[360px] xl:max-w-[407px] h-[190px] bg-[url('/images/surgi-style-5.jpg')]"
           />
           <DressStyleCard
             title="Ophthalmology"
-            url="/shop#formal"
+            url="/shop/Ophthalmology"
             className="md:max-w-[684px] h-[190px] bg-[url('/images/surgi-style-6.jpg')]"
           />
         </motion.div>
-        
       </section>
     </div>
   );

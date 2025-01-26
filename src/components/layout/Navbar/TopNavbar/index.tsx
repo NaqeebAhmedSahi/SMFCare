@@ -1,3 +1,4 @@
+"use client";
 import { cn } from "@/lib/utils";
 import { integralCF } from "@/styles/fonts";
 import Link from "next/link";
@@ -14,7 +15,7 @@ import InputGroup from "@/components/ui/input-group";
 import ResTopNavbar from "./ResTopNavbar";
 import CartBtn from "./CartBtn";
 
-// Update the menu data to reflect new categories
+// Updated menu data with categories and descriptions
 const data: NavMenu = [
   {
     id: 0,
@@ -31,37 +32,37 @@ const data: NavMenu = [
       {
         id: 11,
         label: "General Surgery",
-        url: "/shop#general-surgery",
+        url: "/shop/general-surgery",
         description: "Tools and equipment for surgery procedures.",
       },
       {
         id: 12,
         label: "Laryngoscopes",
-        url: "/shop#laryngoscopes",
+        url: "/shop/laryngoscopes",
         description: "Laryngoscopes for medical examination.",
       },
       {
         id: 13,
         label: "Dental",
-        url: "/shop#dental",
+        url: "/shop/dental",
         description: "Dental care tools and equipment.",
       },
       {
         id: 14,
         label: "Micro Surgery",
-        url: "/shop#micro-surgery",
+        url: "/shop/micro-surgery",
         description: "Precision tools for micro surgery procedures.",
       },
       {
         id: 15,
         label: "Beauty",
-        url: "/shop#beauty",
+        url: "/shop/beauty",
         description: "Beauty products and equipment.",
       },
       {
         id: 16,
         label: "Ophthalmology",
-        url: "/shop#ophthalmology",
+        url: "/shop/ophthalmology",
         description: "Ophthalmology tools and equipment.",
       },
     ],
@@ -70,7 +71,7 @@ const data: NavMenu = [
     id: 2,
     type: "MenuItem",
     label: "Brochure",
-    url: "/shop#on-sale",
+    url: "/shop/on-sale",
     children: [],
   },
   {
@@ -97,14 +98,13 @@ const TopNavbar = () => {
           <div className="block md:hidden mr-4">
             <ResTopNavbar data={data} />
           </div>
-          <Link
-            href="/"
-            className={cn([
-              integralCF.className,
-              "text-2xl lg:text-[32px] mb-2 mr-3 lg:mr-10",
-            ])}
-          >
-            SMF
+          <Link href="/" className="mr-3 lg:mr-10">
+            <Image
+              src="/images/logo.png" // Replace with the correct path for your logo
+              alt="Logo"
+              height={40} // Adjust height as per your logo size
+              width={150} // Adjust width as per your logo size
+            />
           </Link>
         </div>
         <NavigationMenu className="hidden md:flex mr-2 lg:mr-7">
@@ -112,7 +112,9 @@ const TopNavbar = () => {
             {data.map((item) => (
               <React.Fragment key={item.id}>
                 {item.type === "MenuItem" && (
-                  <MenuItem label={item.label} url={item.url} />
+                  <Link href={item.url || "/"}>
+                    <MenuItem label={item.label} url={item.url || "/"} />
+                  </Link>
                 )}
                 {item.type === "MenuList" && (
                   <MenuList data={item.children} label={item.label} />
@@ -144,23 +146,23 @@ const TopNavbar = () => {
             <Image
               priority
               src="/icons/search-black.svg"
-              height={100}
-              width={100}
+              height={22}
+              width={22}
               alt="search"
               className="max-w-[22px] max-h-[22px]"
             />
           </Link>
-          <CartBtn />
-          <Link href="/#signin" className="p-1">
+          {/* <CartBtn />
+          <Link href="/signin" className="p-1">
             <Image
               priority
               src="/icons/user.svg"
-              height={100}
-              width={100}
+              height={22}
+              width={22}
               alt="user"
               className="max-w-[22px] max-h-[22px]"
             />
-          </Link>
+          </Link> */}
         </div>
       </div>
     </nav>

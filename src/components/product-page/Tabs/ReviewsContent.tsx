@@ -19,9 +19,9 @@ const ReviewsContent = () => {
           <h3 className="text-xl sm:text-2xl font-bold text-black mr-2">
             All Reviews
           </h3>
-          <span className="text-sm sm:text-base text-black/60">(451)</span>
+          {/* <span className="text-sm sm:text-base text-black/60">(451)</span> */}
         </div>
-        <div className="flex items-center space-x-2.5">
+        {/* <div className="flex items-center space-x-2.5">
           <Select defaultValue="latest">
             <SelectTrigger className="min-w-[120px] font-medium text-xs sm:text-base px-4 py-3 sm:px-5 sm:py-4 text-black bg-[#F0F0F0] border-none rounded-full h-12">
               <SelectValue />
@@ -39,7 +39,7 @@ const ReviewsContent = () => {
           >
             Write a Review
           </Button>
-        </div>
+        </div> */}
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5 sm:mb-9">
         {reviewsData.map((review) => (

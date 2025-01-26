@@ -1,6 +1,28 @@
 'use client';
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { motion } from "framer-motion";  // Correct import
+import { motion } from "framer-motion";
+import emailjs from 'emailjs-com';  // Import EmailJS
+import Modal from 'react-modal';
+
+// Modal styles (customizing modal to fit above navbar and contact page style)
+const modalStyles = {
+  overlay: {
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    zIndex: 1000, // Ensure modal is above everything
+  },
+  content: {
+    backgroundColor: '#333',
+    borderRadius: '8px',
+    color: '#fff',
+    padding: '30px',
+    maxWidth: '500px',
+    margin: 'auto',
+    position: 'absolute',
+    top: '100px', // Adjust modal to appear below the navbar (if the navbar height is 100px)
+    left: '50%',
+    transform: 'translateX(-50%)',
+  }
+};
 
 interface FormData {
   name: string;
@@ -15,6 +37,12 @@ const ContactPage: React.FC = () => {
     message: "",
   });
 
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [modalType, setModalType] = useState<string>("");  // "success" or "error"
+  const [modalMessage, setModalMessage] = useState<string>("");
+
+  const [isLoading, setIsLoading] = useState(false);  // New loading state
+
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -25,8 +53,37 @@ const ContactPage: React.FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic (e.g., sending form data to a server)
-    console.log(formData);
+    setIsLoading(true);  // Show loading state when submission starts
+
+    // EmailJS configuration (using env variables)
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!;
+    const userId = process.env.NEXT_PUBLIC_EMAILJS_USER_ID!;
+
+    const formDataToSend: Record<string, unknown> = {
+      name: formData.name,
+      email: formData.email,
+      message: formData.message,
+    };
+
+    // Send email via EmailJS
+    emailjs
+      .send(serviceId, templateId, formDataToSend, userId)
+      .then(
+        (response) => {
+          setModalType("success");
+          setModalMessage("Your message has been sent successfully!");
+          setModalIsOpen(true);
+          setIsLoading(false);  // Hide loading state after success
+          setFormData({ name: "", email: "", message: "" });  // Clear form fields
+        },
+        (error) => {
+          setModalType("error");
+          setModalMessage("Something went wrong. Please try again.");
+          setModalIsOpen(true);
+          setIsLoading(false);  // Hide loading state after error
+        }
+      );
   };
 
   return (
@@ -41,9 +98,7 @@ const ContactPage: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold leading-tight">
-            Contact Us
-          </h2>
+          <h2 className="text-4xl md:text-5xl font-bold leading-tight">Contact Us</h2>
           <p className="mt-4 text-gray-300 text-lg md:text-xl max-w-3xl mx-auto">
             We are here to assist you. Feel free to reach out with any inquiries.
           </p>
@@ -64,21 +119,13 @@ const ContactPage: React.FC = () => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8 }}
             >
-              <h3 className="text-3xl md:text-4xl font-semibold mb-6">
-                Get In Touch
-              </h3>
+              <h3 className="text-3xl md:text-4xl font-semibold mb-6">Get In Touch</h3>
               <p className="text-gray-300 mb-6">
                 Have any questions or need further assistance? We're here to help! Reach out to us and we'll respond as soon as possible.
               </p>
-              <p className="text-gray-300">
-                <strong>Address:</strong> 123 Medical Avenue, City, Country
-              </p>
-              <p className="text-gray-300">
-                <strong>Phone:</strong> +1 (123) 456-7890
-              </p>
-              <p className="text-gray-300">
-                <strong>Email:</strong> contact@medicaltools.com
-              </p>
+              <p className="text-gray-300"><strong>Address:</strong> 123 Medical Avenue, City, Country</p>
+              <p className="text-gray-300"><strong>Phone:</strong> +1 (123) 456-7890</p>
+              <p className="text-gray-300"><strong>Email:</strong> contact@medicaltools.com</p>
             </motion.div>
           </div>
 
@@ -89,9 +136,7 @@ const ContactPage: React.FC = () => {
               animate={{ x: 0, opacity: 1 }}
               transition={{ duration: 0.8 }}
             >
-              <h3 className="text-3xl md:text-4xl font-semibold mb-6">
-                Send Us a Message
-              </h3>
+              <h3 className="text-3xl md:text-4xl font-semibold mb-6">Send Us a Message</h3>
               <form onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 gap-6">
                   <div>
@@ -131,8 +176,9 @@ const ContactPage: React.FC = () => {
                     <button
                       type="submit"
                       className="w-full py-3 px-6 bg-green-600 text-white rounded-lg shadow-lg hover:bg-green-700 transition-all duration-300"
+                      disabled={isLoading}  // Disable button while loading
                     >
-                      Send Message
+                      {isLoading ? "Sending..." : "Send Message"}
                     </button>
                   </div>
                 </div>
@@ -148,11 +194,27 @@ const ContactPage: React.FC = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1 }}
         >
-          <p className="text-gray-300 text-sm">
-            © 2025 Medical Tools. All Rights Reserved.
-          </p>
+          <p className="text-gray-300 text-sm">© 2025 Medical Tools. All Rights Reserved.</p>
         </motion.div>
       </motion.div>
+
+      {/* Modal for success or error */}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={() => setModalIsOpen(false)}
+        style={modalStyles}
+      >
+        <h2 className={`text-3xl ${modalType === "success" ? "text-green-500" : "text-red-500"}`}>
+          {modalType === "success" ? "Success!" : "Error!"}
+        </h2>
+        <p className="mt-4">{modalMessage}</p>
+        <button
+          className="mt-6 py-2 px-4 bg-gray-800 text-white rounded-lg hover:bg-gray-700"
+          onClick={() => setModalIsOpen(false)}
+        >
+          Close
+        </button>
+      </Modal>
     </section>
   );
 };
