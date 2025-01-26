@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router"; // Import useRouter for accessing the URL path
+import { useRouter } from "next/router"; 
 import BreadcrumbShop from "@/components/shop-page/BreadcrumbShop";
 import {
   Select,
@@ -29,24 +29,25 @@ export default function ShopPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const router = useRouter(); // Initialize useRouter hook
+  const router = useRouter(); 
   const { category } = router.query; // Extract category from the URL query
 
   useEffect(() => {
-    console.log("-------------------------");
-    if (!category) return; // Don't fetch if there's no category in the URL
+    // Only proceed if category exists in the URL
+    if (!category) return;
 
     const fetchProducts = async () => {
       try {
-        // Format the category (replace "-" with " " and convert to lowercase)
         const formattedCategory = category.toString().replace(/-/g, " ").toLowerCase();
-        console.log("Category ",formattedCategory);
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/products?category=${formattedCategory}`);
+        
+        // Check if the response is valid
         if (!response.ok) {
-          throw new Error('Failed to fetch products');
+          throw new Error("Failed to fetch products");
         }
+
         const data = await response.json();
-        setProducts(data.products); // Assuming the response contains the array of products
+        setProducts(data.products || []); // Ensure products exist in the response
       } catch (error) {
         console.error("Error fetching products:", error);
       } finally {
@@ -55,7 +56,7 @@ export default function ShopPage() {
     };
 
     fetchProducts();
-  }, [category]); // Trigger when the category changes
+  }, [category]);
 
   const totalPages = Math.ceil(products.length / productsPerPage);
 
@@ -76,13 +77,6 @@ export default function ShopPage() {
         <hr className="h-[1px] border-t-black/10 mb-5 sm:mb-6" />
         <BreadcrumbShop />
         <div className="flex md:space-x-5 items-start">
-          {/* <div className="hidden md:block min-w-[295px] border border-black/10 rounded-[20px] px-5 py-5 space-y-5">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-black text-xl">Filters</span>
-              <FiSliders className="text-2xl text-black/40" />
-            </div>
-             <Filters /> 
-        </div> */}
           <div className="flex flex-col w-full space-y-5">
             <div className="flex flex-col lg:flex-row lg:justify-between">
               <h1 className="font-bold text-2xl md:text-[32px]">{category}</h1>
@@ -109,9 +103,8 @@ export default function ShopPage() {
             <PaginationPrevious
               href="#"
               onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)}
-              className={currentPage === 1 ? 'pointer-events-none opacity-50' : ''}
+              className={currentPage === 1 ? "pointer-events-none opacity-50" : ""}
             />
-
             <PaginationContent>
               {[...Array(totalPages)].map((_, index) => (
                 <PaginationItem key={index}>
@@ -129,7 +122,7 @@ export default function ShopPage() {
             <PaginationNext
               href="#"
               onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)}
-              className={currentPage === totalPages ? 'pointer-events-none opacity-50' : ''}
+              className={currentPage === totalPages ? "pointer-events-none opacity-50" : ""}
             />
           </div>
         </div>

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import connectToDatabase from "../../pages/dbConnect"; // Ensure this file contains your MongoDB connection logic
-import Product from "../../pages/models/Product";
+import connectToDatabase from "../../lib/dbConnect"; // Ensure this file contains your MongoDB connection logic
+import Product from "../../app/models/Product";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await connectToDatabase(); // Connect to MongoDB
