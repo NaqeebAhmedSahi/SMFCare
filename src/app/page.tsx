@@ -1,8 +1,12 @@
+// pages/index.tsx or your home component file
 import ProductListSec from '@/components/common/ProductListSec';
 import Brands from '@/components/homepage/Brands';
 import DressStyle from '@/components/homepage/DressStyle';
 import Header from '@/components/homepage/Header';
 import Reviews from '@/components/homepage/Reviews';
+import WhyChooseUs from '@/components/homepage/ChooseUs'; 
+import OurValue from '@/components/homepage/OurValue'; // Import OurValue component
+
 import { Product } from '@/types/product.types';
 import { reviewsData } from '@/utils/data';
 
@@ -24,7 +28,6 @@ export default async function Home() {
         'Content-Type': 'application/json',
       },
     });
-    
 
     const data = await response.json();
 
@@ -51,9 +54,22 @@ export default async function Home() {
         <div className="mb-[50px] sm:mb-20">
           <ProductListSec title="TOP SELLING" data={topSelling} viewAllLink="/shop/all" />
         </div>
+        {/* Add the Why Choose Us section here */}
+        <div className="mb-[50px] sm:mb-20">
+          <WhyChooseUs />
+        </div>
+        
+       
+
         <div className="mb-[50px] sm:mb-20">
           <DressStyle />
         </div>
+
+         {/* Add the Our Value section here */}
+         <div className="mb-[50px] sm:mb-20">
+          <OurValue /> {/* Render the OurValue component */}
+        </div>
+
         <Reviews data={reviewsData} />
       </main>
     </>
